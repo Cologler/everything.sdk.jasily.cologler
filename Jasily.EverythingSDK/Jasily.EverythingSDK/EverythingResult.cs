@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Jasily.EverythingSDK
 {
-    internal sealed class EverythingResult : IEnumerable<string>, IDisposable
+    public sealed class EverythingResult : IEnumerable<string>, IDisposable
     {
         private const int MaxFileNameLength = 65536;
 
@@ -21,9 +21,9 @@ namespace Jasily.EverythingSDK
         public IEnumerator<string> GetEnumerator()
         {
             var sb = new StringBuilder(MaxFileNameLength);
-            for (var i = 0; i < this.GetValue(EverythingAPI.Everything_GetNumResults); i++)
+            for (var i = 0; i < this.ResultCount; i++)
             {
-                if (this.isDisposed) throw new ObjectDisposedException("readly begin another search.");
+                this.ThrowIfDisposed();
                 sb.Clear();
                 EverythingAPI.Everything_GetResultFullPathNameW(i, sb, MaxFileNameLength);
                 yield return sb.ToString();
@@ -37,11 +37,18 @@ namespace Jasily.EverythingSDK
             this.isDisposed = true;
         }
 
-        private T GetValue<T>(Func<T> func)
+        private void ThrowIfDisposed()
         {
             if (this.isDisposed) throw new ObjectDisposedException("readly begin another search.");
+        }
+
+        private T GetValue<T>(Func<T> func)
+        {
+            this.ThrowIfDisposed();
             return func();
         }
+
+        public int ResultCount => this.GetValue(EverythingAPI.Everything_GetNumResults);
 
         public int TotalFileCount => this.GetValue(EverythingAPI.Everything_GetTotFileResults);
 

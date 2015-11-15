@@ -3,6 +3,18 @@ Jasily.EverythingSDK
 
 a nice C# wrapper for Everything binary SDK.
 
+how to use
+---
+
+``` cs
+var search = new EverythingSearch();
+var result = search.Search("abc", 100, 4);
+foreach (var path in result)
+{
+    Console.WriteLine(path);
+}
+```
+
 ref dll
 ---
 
