@@ -40,7 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="EverythingSearch.cs" />
+    <Compile Include="EverythingAPI.cs" />
+    <Compile Include="EverythingResult.cs" />
+    <Compile Include="EverythingSearchParameters.cs" />
+    <Compile Include="IEverythingSearchParameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
