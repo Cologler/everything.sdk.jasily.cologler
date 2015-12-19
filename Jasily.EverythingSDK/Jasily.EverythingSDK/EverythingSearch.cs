@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace Jasily.EverythingSDK
@@ -29,6 +30,18 @@ namespace Jasily.EverythingSDK
             EverythingAPI.Everything_QueryW(true);
 
             return (lastResult = new EverythingResult(param));
+        }
+
+        public IEnumerable<EverythingResult> SearchAll(string keyword, int pageSize)
+        {
+            var offset = 0;
+            EverythingResult ret;
+            do
+            {
+                ret = this.Search(keyword, pageSize, offset);
+                yield return ret;
+                offset += ret.ResultCount;
+            } while (ret.TotalCount > offset + pageSize);
         }
     }
 }
